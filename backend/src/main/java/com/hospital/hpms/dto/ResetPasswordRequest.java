@@ -1,0 +1,19 @@
+package com.hospital.hpms.dto;
+
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import lombok.Data;
+
+@Data
+public class ResetPasswordRequest {
+
+    @NotBlank(message = "Reset token is required")
+    private String token;
+
+    @NotBlank(message = "Password must meet security requirements")
+    @Pattern(
+        regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*]).{8,}$",
+        message = "Password must meet security requirements"
+    )
+    private String password;
+}
