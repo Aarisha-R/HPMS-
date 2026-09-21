@@ -18,7 +18,7 @@ public class AppointmentController {
     private final AppointmentService appointmentService;
 
     @PostMapping
-    @PreAuthorize("hasAnyRole('PATIENT','RECEPTIONIST','DOCTOR','ADMIN')")
+    @PreAuthorize("hasAnyRole('PATIENT','RECEPTIONIST','NURSE','DOCTOR','ADMIN')")
     public ResponseEntity<Appointment> create(@RequestBody Appointment appointment) {
         return ResponseEntity.ok(appointmentService.create(appointment));
     }
@@ -42,14 +42,14 @@ public class AppointmentController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAnyRole('PATIENT','RECEPTIONIST','DOCTOR','ADMIN')")
+    @PreAuthorize("hasAnyRole('PATIENT','RECEPTIONIST','NURSE','DOCTOR','ADMIN')")
     public ResponseEntity<Void> cancel(@PathVariable Long id) {
         appointmentService.cancel(id);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/available-slots")
-    @PreAuthorize("hasAnyRole('PATIENT','RECEPTIONIST','DOCTOR','ADMIN')")
+    @PreAuthorize("hasAnyRole('PATIENT','RECEPTIONIST','NURSE','DOCTOR','ADMIN')")
     public ResponseEntity<List<String>> availableSlots() {
         // Simplified fixed daily slot list; replace with real calendar logic against doctor schedules.
         return ResponseEntity.ok(List.of("09:00","09:30","10:00","10:30","11:00","11:30",

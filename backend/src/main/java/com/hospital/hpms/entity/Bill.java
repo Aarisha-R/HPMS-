@@ -22,6 +22,9 @@ public class Bill {
     @Column(name = "admission_id")
     private String admissionId;
 
+    @Column(name = "appointment_id")
+    private Long appointmentId;
+
     @Column(name = "total_amount", precision = 12, scale = 2)
     private BigDecimal totalAmount;
 

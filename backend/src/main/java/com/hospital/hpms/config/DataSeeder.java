@@ -28,6 +28,7 @@ public class DataSeeder implements CommandLineRunner {
     @Override
     public void run(String... args) {
         if (departmentRepository.count() > 0) {
+                        ensureGeneralWard();
             return; // already seeded
         }
 
@@ -102,6 +103,8 @@ public class DataSeeder implements CommandLineRunner {
                     .bedType(BedType.ICU).status(BedStatus.AVAILABLE).build());
         }
 
+        createGeneralWard(cardiology.getId());
+
         appointmentRepository.save(Appointment.builder()
                 .patientId(patient.getId()).doctorId(doctor.getId())
                 .departmentId(cardiology.getId())
@@ -122,5 +125,26 @@ public class DataSeeder implements CommandLineRunner {
         System.out.println(" Patient      -> ananya       / Patient@12345");
         System.out.println("=================================================================");
     }
+
+        private void ensureGeneralWard() {
+                boolean exists = wardRepository.findAll().stream()
+                                .anyMatch(ward -> ward.getWardType() == WardType.GENERAL);
+                if (!exists) {
+                        createGeneralWard(null);
+                }
+        }
+
+        private void createGeneralWard(Long departmentId) {
+                Ward generalWard = wardRepository.save(Ward.builder()
+                                .wardName("General Ward 1").wardType(WardType.GENERAL)
+                                .totalBeds(10).occupiedBeds(0).departmentId(departmentId)
+                                .floorNumber(2).build());
+
+                for (int i = 1; i <= 10; i++) {
+                        bedRepository.save(Bed.builder()
+                                        .wardId(generalWard.getId()).bedNumber("GEN-" + i)
+                                        .bedType(BedType.GENERAL).status(BedStatus.AVAILABLE).build());
+                }
+        }
 }
 

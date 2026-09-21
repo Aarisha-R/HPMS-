@@ -30,6 +30,14 @@ public class BillingService {
     }
 
     @Transactional
+    public void delete(Long billId) {
+        if (!billRepository.existsById(billId)) {
+            throw new ResourceNotFoundException("Bill not found");
+        }
+        billRepository.deleteById(billId);
+    }
+
+    @Transactional
     public Bill recordPayment(Long billId, BigDecimal amount) {
         Bill bill = billRepository.findById(billId)
                 .orElseThrow(() -> new ResourceNotFoundException("Bill not found"));

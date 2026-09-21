@@ -3,6 +3,7 @@ package com.hospital.hpms.controller;
 import com.hospital.hpms.entity.LabOrder;
 import com.hospital.hpms.entity.LabResult;
 import com.hospital.hpms.service.LabService;
+import com.hospital.hpms.entity.enums.LabOrderStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -39,6 +40,12 @@ public class LabController {
     @PreAuthorize("hasAnyRole('LAB_TECHNICIAN','DOCTOR','ADMIN')")
     public ResponseEntity<List<LabOrder>> pending() {
         return ResponseEntity.ok(labService.getPendingOrders());
+    }
+
+    @PutMapping("/orders/{orderId}/status")
+    @PreAuthorize("hasAnyRole('LAB_TECHNICIAN','ADMIN')")
+    public ResponseEntity<LabOrder> updateStatus(@PathVariable Long orderId, @RequestParam LabOrderStatus status) {
+        return ResponseEntity.ok(labService.updateStatus(orderId, status));
     }
 
     @GetMapping("/critical-values")

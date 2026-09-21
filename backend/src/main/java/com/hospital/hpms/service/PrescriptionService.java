@@ -26,6 +26,10 @@ public class PrescriptionService {
         return prescriptionRepository.findByPatientId(patientId);
     }
 
+    public List<Prescription> getPending() {
+        return prescriptionRepository.findByDispensingStatusOrderByPrescriptionDateAsc(DispensingStatus.PENDING);
+    }
+
     @Transactional
     public Prescription updateDispensingStatus(Long id, DispensingStatus status) {
         Prescription p = prescriptionRepository.findById(id)

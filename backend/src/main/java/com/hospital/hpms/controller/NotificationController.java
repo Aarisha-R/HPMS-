@@ -30,4 +30,10 @@ public class NotificationController {
     public ResponseEntity<Notification> markRead(@PathVariable Long id) {
         return ResponseEntity.ok(notificationService.markRead(id));
     }
+
+    @PostMapping("/user/{userId}/mark-all-read")
+    public ResponseEntity<Void> markAllRead(@PathVariable Long userId) {
+        notificationService.markAllRead(userId);
+        return ResponseEntity.noContent().build();
+    }
 }

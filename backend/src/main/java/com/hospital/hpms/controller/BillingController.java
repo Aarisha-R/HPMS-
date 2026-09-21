@@ -29,6 +29,13 @@ public class BillingController {
         return ResponseEntity.ok(billingService.getByPatient(patientId));
     }
 
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        billingService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
     @PutMapping("/{id}/payment")
     @PreAuthorize("hasAnyRole('RECEPTIONIST','ADMIN')")
     public ResponseEntity<Bill> recordPayment(@PathVariable Long id, @RequestParam BigDecimal amount) {

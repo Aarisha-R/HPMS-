@@ -29,6 +29,12 @@ public class PrescriptionController {
         return ResponseEntity.ok(prescriptionService.getByPatient(patientId));
     }
 
+    @GetMapping("/pending")
+    @PreAuthorize("hasAnyRole('PHARMACIST','ADMIN')")
+    public ResponseEntity<List<Prescription>> pending() {
+        return ResponseEntity.ok(prescriptionService.getPending());
+    }
+
     @PutMapping("/{id}/dispense")
     @PreAuthorize("hasAnyRole('PHARMACIST','ADMIN')")
     public ResponseEntity<Prescription> dispense(@PathVariable Long id, @RequestParam DispensingStatus status) {

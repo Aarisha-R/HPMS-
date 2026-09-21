@@ -33,4 +33,9 @@ public class NotificationService {
         n.setIsRead(true);
         return notificationRepository.save(n);
     }
+
+    @Transactional
+    public void markAllRead(Long userId) {
+        notificationRepository.markAllRead(userId);
+    }
 }

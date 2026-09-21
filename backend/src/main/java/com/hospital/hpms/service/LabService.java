@@ -38,6 +38,17 @@ public class LabService {
     }
 
     @Transactional
+    public LabOrder updateStatus(Long orderId, LabOrderStatus status) {
+        LabOrder order = labOrderRepository.findById(orderId)
+                .orElseThrow(() -> new ResourceNotFoundException("Lab order not found"));
+        if (status != LabOrderStatus.COLLECTED && status != LabOrderStatus.IN_PROGRESS) {
+            throw new IllegalArgumentException("Only COLLECTED and IN_PROGRESS statuses can be set manually");
+        }
+        order.setStatus(status);
+        return labOrderRepository.save(order);
+    }
+
+    @Transactional
     public LabResult enterResult(Long orderId, LabResult result) {
         LabOrder order = labOrderRepository.findById(orderId)
                 .orElseThrow(() -> new ResourceNotFoundException("Lab order not found"));
